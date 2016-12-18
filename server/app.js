@@ -46,7 +46,7 @@ app.get('/getTask', function(req, res){
       console.log('error connecting to database' + err);
     } else {
       console.log('connected to DB');
-      var query = client.query('SELECT * from toDo');
+      var query = client.query('SELECT * from todo');
 
       query.on('row', function(row){
         tasks.push(row);

@@ -7,19 +7,25 @@ $(document).ready(function(){
   $('appendToDom').append(tasks.length);
   getTask();
 
+
+  //addTask button click
   $('#addTask').on('click', function(){
     postTask();
     $('input[type="text"]').val('');
-
-
+    location.reload();
   });//end addTask onclick
+
+
+
+  //delete task button
 
 
   var postTask = function(){
     console.log('in postTask');
     //assemble object to send
     var newTask = {
-      task: $('#inputTask').val()
+      task: $('#inputTask').val(),
+      completed: false
     }; //end newTask
     console.log(newTask);
     $.ajax({
@@ -49,10 +55,18 @@ function getTask (){
 
 function displayTasks (){
   for (var i = 0; i < tasks.length; i++) {
-    outputText += '<p><li>' + tasks[i].task + '<button class="complete">task complete</button><button class="delete">delete task</button></li></p>';
+    outputText += '<p><li>' + tasks[i].task + '<button class="complete" data=' + i + '>task complete</button><button class="delete" data=' + i + '>delete task</button></li></p>';
+    //task complete button
   }
-$('#appendToDom').append(outputText);
+  $('#appendToDom').append(outputText);
+  $('.complete').on('click', function(){
+    console.log('complete task button clicked');
+    // $("#strikeThru").strike(tasks[i].task);
+    $('.complete').hide(i);
+  }); //end task complete button
+
 } //end displayTasks
+
 
 
 });//end doc ready

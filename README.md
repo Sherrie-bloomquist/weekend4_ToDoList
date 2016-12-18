@@ -9,14 +9,16 @@ requires jquery, Node, Express, postgressSQL
 [x] basic html setup connecting javascript, jquery, and css   
 [x] create database
 
-   
+
 FUNCTIONALITY
 ___________________________  
 
 [x] html: create input field and button to submit task    
 [x] send task to database      
-[] display input on DOM   
-[]
+[x] display input on DOM with complete and delete buttons   
+[] add functionality to complete and delete buttons
+[] style it up!  
+
 
 
 
