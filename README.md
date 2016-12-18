@@ -16,7 +16,8 @@ ___________________________
 [x] html: create input field and button to submit task    
 [x] send task to database      
 [x] display input on DOM with complete and delete buttons   
-[] add functionality to complete and delete buttons
+[x] add functionality to complete button   
+[] add functionality to delete button   
 [] style it up!  
 
 

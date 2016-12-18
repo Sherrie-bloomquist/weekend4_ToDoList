@@ -4,8 +4,8 @@ var tasks = [];
 
 
 $(document).ready(function(){
-  $('appendToDom').append(tasks.length);
   getTask();
+  // $(document).on('click', '.deleteButton', deleteTask);
 
 
   //addTask button click
@@ -34,7 +34,6 @@ $(document).ready(function(){
       data: newTask,
       success: function(response){
         console.log('back from postTask:', response);
-         $('#appendToDom').append(outputText);
       }//end success function
     });//end ajax call for newTask
   }; //end postTask function
@@ -47,26 +46,34 @@ function getTask (){
       console.log('back from get call:', response);
       for (var i = 0; i < response.length; i++) {
         tasks.push(response[i]);
+        if(response[i].completed === false){
+          outputText += '<p><li>' + response[i].task + '<button class="complete" data="' + response[i].id + '">task complete</button><button class="delete" data="' + response[i].id + '">delete task</button></li></p>';
+        } else {
+          outputText += '<p><li><strike>' + response[i].task + '</strike><button class="delete" data="' + response[i].id + '">delete task</button></li></p>';
+        }
       }//end for loop
-      displayTasks();
+      $('#appendToDom').append(outputText);
+
     } //end success function
   });//end ajax call
 }//end getTask function
 
-function displayTasks (){
-  for (var i = 0; i < tasks.length; i++) {
-    outputText += '<p><li>' + tasks[i].task + '<button class="complete" data=' + i + '>task complete</button><button class="delete" data=' + i + '>delete task</button></li></p>';
-    //task complete button
-  }
-  $('#appendToDom').append(outputText);
-  $('.complete').on('click', function(){
-    console.log('complete task button clicked');
-    // $("#strikeThru").strike(tasks[i].task);
-    $('.complete').hide(i);
-  }); //end task complete button
+//update task completed status
+$('#appendToDom').on('click', '.complete', function(){
+  location.reload();
+  var allDone = $(this).attr('data');
+  var objectToSend = {
+      id: allDone
+    };
+    $.ajax({
+      url: '/taskCompleted',
+      type: 'PUT',
+      data: objectToSend,
+      success: function (data){
 
-} //end displayTasks
-
+      }//end success function
+    });//end ajax call
+  });//end task complete onclick
 
 
 });//end doc ready
