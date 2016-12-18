@@ -9,34 +9,57 @@ var urlEncodedParser = bodyParser.urlencoded({
 var port = process.env.PORT || 3000;
 // create connection string to our database
 var connectionString = 'postgres://localhost:5432/ToDoList';
-var fromClient = [];
-console.log(fromClient);
+var tasks = [];
 
 app.listen(port, function(req, res){
   console.log('server listening on', port);
 }); //end app.listen
+
 // app.use(bodyParser.json());
+
 app.get('/', function(req, res){
-  // console.log('Base url hit!');
   res.sendFile(path.resolve('client/index.html'));
 }); //end base url
 
 app.post('/postTask', urlEncodedParser, function(req, res){
   console.log('adding new task:', req.body);
-  var task = req.body.task;
-  fromClient.push(req.body);
+  // var task = req.body.task;
+  tasks.push(req.body);
   pg.connect(connectionString, function(err, client, done){
     if(err){
       console.log(err);
     } else {
       console.log('connected to database receiving: ' + req.body);
-      client.query('INSERT INTO ToDoList(task) VALUES($1)', [req.body.task]);
+      client.query('INSERT INTO toDo(task) VALUES($1)', [req.body.task]);
       done();
-      res.send('success post ToDoList');
+      res.send('successfully posted to DB');
     }
 
   }); //end pg.connect
 }); //end app.post/postTask
+
+app.get('/getTask', function(req, res){
+  console.log('getting tasks');
+  //connect to database
+  pg.connect(connectionString, function(err, client, done){
+    if(err){
+      console.log('error connecting to database' + err);
+    } else {
+      console.log('connected to DB');
+      var query = client.query('SELECT * from toDo');
+
+      query.on('row', function(row){
+        tasks.push(row);
+      });//end query.on row
+      query.on('end', function(){
+        done();
+        console.log('sending array back to client' + tasks);
+        res.send(tasks);
+      }); //end query.on end
+    }//end else statement
+  }); //end pg.connect
+});//end /getTask
+
 
 
 

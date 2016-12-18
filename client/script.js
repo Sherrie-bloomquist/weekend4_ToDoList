@@ -1,49 +1,58 @@
-//global arrays
-var task = [];
+//global variables
+var outputText = '';
+var tasks = [];
 
 
 $(document).ready(function(){
+  $('appendToDom').append(tasks.length);
+  getTask();
 
+  $('#addTask').on('click', function(){
+    postTask();
+    $('input[type="text"]').val('');
+
+
+  });//end addTask onclick
 
 
   var postTask = function(){
     console.log('in postTask');
     //assemble object to send
-    var newTask = $('#inputTask').val();
-    var objectToSend = {
-      task: newTask
-    }; //end objectToSend
-    console.log(objectToSend);
+    var newTask = {
+      task: $('#inputTask').val()
+    }; //end newTask
+    console.log(newTask);
     $.ajax({
       type: 'POST',
       url: '/postTask',
-      data: objectToSend,
+      data: newTask,
       success: function(response){
         console.log('back from postTask:', response);
-        // outputText += '<p>' + response.answer + '</p>';
-        // $('#inputTask').append(outputText);
+         $('#appendToDom').append(outputText);
       }//end success function
-
-
     });//end ajax call for newTask
-
-
-
   }; //end postTask function
 
+function getTask (){
+  $.ajax({
+    type: 'GET',
+    url: '/getTask',
+    success: function(response){
+      console.log('back from get call:', response);
+      for (var i = 0; i < response.length; i++) {
+        tasks.push(response[i]);
+      }//end for loop
+      displayTasks();
+    } //end success function
+  });//end ajax call
+}//end getTask function
 
-//Append to DOM
+function displayTasks (){
+  for (var i = 0; i < tasks.length; i++) {
+    outputText += '<p><li>' + tasks[i].task + '<button class="complete">task complete</button><button class="delete">delete task</button></li></p>';
+  }
+$('#appendToDom').append(outputText);
+} //end displayTasks
 
-
-
-  //event handlers
-  function enable(){
-  $('#addTask').on('click', function(){
-    postTask();
-  });//end addTask onclick
-}//end enable function
-
-
-enable();
 
 });//end doc ready

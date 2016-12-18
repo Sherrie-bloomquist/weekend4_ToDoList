@@ -1,3 +1,67 @@
-h1 {
-  color: blue;
+body {
+  background-image: url("http://vignette2.wikia.nocookie.net/clubpenguin/images/f/f7/Sun_Pin.PNG/revision/latest?cb=20150313154846");
+  background-size: 50%;
+  background-repeat: repeat-y;
+  background-position: right;
+  margin: 30px;
+
 }
+
+#banner{
+  background-color: limegreen;
+  width: 100%;
+  margin-bottom: 75px;
+  margin-top: 75px;
+  font-family: 'Papyrus', Arial, sans-serif;
+  font-size: 30px;
+}
+
+h1 {
+  color: black;
+  text-align: center;
+  padding: 20px;
+
+}
+
+#inputTask{
+  width: 400px;
+  height: 48px;
+  font-size: 20px;
+  font-family: 'Papyrus', Arial, sans-serif;
+}
+
+#addTask{
+  background-color: limegreen;
+  font-size: 20px;
+  padding: 12px 28px;
+  border: none;
+  font-family: 'Papyrus', Arial, sans-serif;
+  margin-left: 40px;
+}
+
+#appendToDom {
+  font-size: 35px;
+  font-family: 'Papyrus', Arial, sans-serif;
+  padding-top: 20px;
+}
+
+.complete, .delete {
+  font-family: 'Papyrus', Arial, sans-serif;
+  font-size: 12px;
+  width: 8%;
+  padding-top: 8px;
+
+  margin-left: 20px;
+  font-weight: bolder;
+
+
+}
+
+.complete {
+  background-color: #FF7F50;
+
+}
+
+ .delete {
+   background-color: #FF0000;
+ }
