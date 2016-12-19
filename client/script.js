@@ -1,14 +1,13 @@
-//global variables
+//----global variables-----//
 var outputText = '';
 var tasks = [];
 
 
 $(document).ready(function(){
   getTask();
-  // $(document).on('click', '.deleteButton', deleteTask);
 
 
-  //addTask button click
+  //--------on click function for adding a new task------------//
   $('#addTask').on('click', function(){
     postTask();
     $('input[type="text"]').val('');
@@ -16,10 +15,7 @@ $(document).ready(function(){
   });//end addTask onclick
 
 
-
-  //delete task button
-
-
+//-----------sending new task input to server-------------//
   var postTask = function(){
     console.log('in postTask');
     //assemble object to send
@@ -38,6 +34,8 @@ $(document).ready(function(){
     });//end ajax call for newTask
   }; //end postTask function
 
+
+//-------response from server current to-do list appending to DOM----------//
 function getTask (){
   $.ajax({
     type: 'GET',
@@ -53,12 +51,12 @@ function getTask (){
         }
       }//end for loop
       $('#appendToDom').append(outputText);
-
     } //end success function
   });//end ajax call
 }//end getTask function
 
-//update task completed status
+
+//----------on click function for a completed task---------------//
 $('#appendToDom').on('click', '.complete', function(){
   location.reload();
   var allDone = $(this).attr('data');
@@ -70,10 +68,30 @@ $('#appendToDom').on('click', '.complete', function(){
       type: 'PUT',
       data: objectToSend,
       success: function (data){
-
       }//end success function
     });//end ajax call
   });//end task complete onclick
 
+
+  //----------on click function for a deleted task-----------//
+  $('#appendToDom').on('click', '.delete', function(){
+    location.reload();
+    var result = confirm("Are you sure you want to delete this task???");
+    if (result) {
+
+      var deleteTask = $(this).attr('data');
+      var objectToSend = {
+        id: deleteTask
+      };
+    $.ajax({
+      url: '/taskDeleted',
+      type: 'DELETE',
+      data: objectToSend,
+      success: function(data){
+        getTask();
+      }//end success function
+    });//end ajax call
+    }
+  });//end delete task onclick
 
 });//end doc ready

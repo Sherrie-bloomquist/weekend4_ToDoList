@@ -17,8 +17,9 @@ ___________________________
 [x] send task to database      
 [x] display input on DOM with complete and delete buttons   
 [x] add functionality to complete button   
-[] add functionality to delete button   
-[] style it up!  
+[x] add functionality to delete button   
+[x] add alert box when delete button clicked to confirm   
+[x] style it up!  
 
 
 

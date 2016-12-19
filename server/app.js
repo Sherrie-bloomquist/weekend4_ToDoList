@@ -7,7 +7,7 @@ var urlEncodedParser = bodyParser.urlencoded({
     extended: true
 }); // end var urlEncoderParser
 var port = process.env.PORT || 3000;
-// create connection string to our database
+// create connection string to the database
 var connectionString = 'postgres://localhost:5432/ToDoList';
 var tasks = [];
 
@@ -15,12 +15,12 @@ app.listen(port, function(req, res){
   console.log('server listening on', port);
 }); //end app.listen
 
-// app.use(bodyParser.json());
-
 app.get('/', function(req, res){
   res.sendFile(path.resolve('client/index.html'));
 }); //end base url
 
+
+//------sending new task to the database------//
 app.post('/postTask', urlEncodedParser, function(req, res){
   console.log('adding new task:', req.body);
   // var task = req.body.task;
@@ -34,10 +34,11 @@ app.post('/postTask', urlEncodedParser, function(req, res){
       done();
       res.send('successfully posted to DB');
     }
-
   }); //end pg.connect
 }); //end app.post/postTask
 
+
+//--------updating task in database to true when task is complete------//
 app.put('/taskCompleted', urlEncodedParser, function(req, res){
   console.log('updating database:', req.body);
   pg.connect(connectionString, function(err, client, done){
@@ -46,10 +47,11 @@ app.put('/taskCompleted', urlEncodedParser, function(req, res){
    } else {
      var query = client.query('UPDATE todo SET completed = TRUE WHERE id = $1', [req.body.id]);
      done();
-}
-});
+    }
+  });
 });//end app.put
 
+//---------getting current info from the database and sending to the client---//
 app.get('/getTask', function(req, res){
   console.log('getting tasks');
   //connect to database
@@ -60,7 +62,6 @@ app.get('/getTask', function(req, res){
       console.log('connected to DB');
       var tasks = [];
       var query = client.query('SELECT * from todo');
-
       query.on('row', function(row){
         tasks.push(row);
       });//end query.on row
@@ -68,16 +69,30 @@ app.get('/getTask', function(req, res){
         done();
         console.log('sending array back to client' + tasks);
         res.send(tasks);
-      }); //end query.on end
+      }); //end query.on
     }//end else statement
   }); //end pg.connect
 });//end /getTask
 
 
-
-
-
-
+//-------deleting task from database-----------//
+app.delete ('/taskDeleted', urlEncodedParser, function(req, res){
+      console.log('in delete task');
+  pg.connect(connectionString, function(err, client, done){
+    if (err){
+    console.log("problem with delete");
+    } else {
+  client.query('DELETE FROM todo WHERE id = $1', [req.body.id]);
+  query.on('row', function(row){
+    tasks.push(row);
+  });//end query.on row
+    query.on('end', function(){
+      done();
+      res.send('its deleted!');
+    });//end query.on end
+    }
+  });//end pg.connect
+});//end app.delete
 
 
 
