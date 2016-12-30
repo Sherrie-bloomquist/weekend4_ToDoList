@@ -45,9 +45,9 @@ function getTask (){
       for (var i = 0; i < response.length; i++) {
         tasks.push(response[i]);
         if(response[i].completed === false){
-          outputText += '<p><li>' + response[i].task + '<button class="complete" data="' + response[i].id + '">task complete</button><button class="delete" data="' + response[i].id + '">delete task</button></li></p>';
+          outputText += '<p><li>' + response[i].task + '<button class="complete" data="' + response[i].id + '">completed</button><button class="delete" data="' + response[i].id + '">delete</button></li></p>';
         } else {
-          outputText += '<p><li><strike>' + response[i].task + '</strike><button class="delete" data="' + response[i].id + '">delete task</button></li></p>';
+          outputText += '<p><li><strike>' + response[i].task + '</strike><button class="delete" data="' + response[i].id + '">delete</button></li></p>';
         }
       }//end for loop
       $('#appendToDom').append(outputText);
